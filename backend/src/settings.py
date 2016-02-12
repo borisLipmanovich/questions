@@ -25,6 +25,8 @@ SECRET_KEY = 'k8@@lwnp41$exllwntw-u0#+h$4fb!vn#2bd$+_ab^cch^@*vc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DEFAULT_USER = 5 #Anonymous user
+
 ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {

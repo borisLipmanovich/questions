@@ -5,6 +5,7 @@ from web.modules.questionSerializer import QuestionSerializer
 from web.modules.jsonResponse import JSONResponse
 from web.models import Question
 from django.contrib.auth.models import User
+from django.conf import settings
 
 @api_view(['GET', 'POST'])
 def question_list(request):
@@ -21,7 +22,7 @@ def question_list(request):
             if request.user.is_authenticated():
                 user_id = request.user
             else:
-                user_id = 5
+                user_id = settings.DEFAULT_USER
 
             user = User.objects.get(id=user_id)
             serializer.save(author = user)
