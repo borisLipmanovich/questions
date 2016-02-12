@@ -4,7 +4,6 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-var url = 'http://127.0.0.1:8000'; //service url
 angular.module('starter', ['ionic'])
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -27,11 +26,7 @@ angular.module('starter', ['ionic'])
   })
   .controller("QuestionsController", function($scope, $http, $location, $ionicModal) {
     /*Get Questions*/
-    $http({
-      method: 'GET',
-      url: url + '/questions/',
-      headers: {'Content-Type': 'application/json; charset=utf-8'}
-    }).
+    questionProcessor.getList($http).
     success(function(data) {
       $scope.data = data;
     }).
@@ -39,64 +34,40 @@ angular.module('starter', ['ionic'])
       console.log('Can not get the questions from the server');
     });
 
-    $ionicModal.fromTemplateUrl('templates/modal.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal
-    });
-
-    /*Add Question Modal*/
-    $scope.openModal = function() {
-      $scope.modal.show()
-    };
-    $scope.closeModal = function() {
-      $scope.modal.hide();
-    };
+    modal.init($ionicModal, $scope);
     $scope.saveModal = function() {
-      console.log($scope.data.newQuestion);
-        $http({
-          method: 'POST',
-          data: $scope.data.newQuestion,
-          url: url + '/questions/',
-          headers: {'Content-Type': 'application/json; charset=utf-8'}
-        }).
-        success(function () {
-          window.location.reload(true)
-        }).
-        error(function() {
-          console.log('Can not add the question');
-        });
-      $scope.modal.hide();
+      var data = {
+        title: $scope.data.title,
+        description: $scope.data.description
+      };
+      questionProcessor.add($http, data).
+      success(function () {
+        $scope.modal.hide();
+        window.location.reload(true)
+      }).
+      error(function() {
+        console.log('Can not add the question');
+      });
     };
-    $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
+
     $scope.showQuestion = function (id){
       $location.path("/questions/" + id + "/");
     };
+
     $scope.deleteQuestion = function (id){
-      $http({
-        method: 'DELETE',
-        url: url + '/questions/' + id + '/',
-        headers: {'Content-Type': 'application/json; charset=utf-8'}
-      }).
+      questionProcessor.delete($http, id).
       success(function () {
+        $scope.modal.hide();
         window.location.reload(true)
       }).
       error(function() {
         console.log('Can not delete the question');
       });
-      $scope.modal.hide();
     };
   })
   .controller("QuestionController", function($scope, $http, $location, $stateParams, $ionicModal) {
     /*Get Question*/
-    $http({
-      method: 'GET',
-      url:  url + '/questions/' + $stateParams.id + '/',
-      headers: {'Content-Type': 'application/json; charset=utf-8'}
-    }).
+    questionProcessor.get($http, $stateParams.id).
     success(function(data) {
       $scope.data = data;
     }).
@@ -105,35 +76,80 @@ angular.module('starter', ['ionic'])
     });
 
     /*Update Question Modal*/
-    $ionicModal.fromTemplateUrl('templates/modal.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal
-    });
-    $scope.openModal = function() {
-      $scope.modal.show()
-    };
-    $scope.closeModal = function() {
-      $scope.modal.hide();
-    };
+    modal.init($ionicModal, $scope);
     $scope.saveModal = function() {
-      $http({
-        method: 'PUT',
-        data: $scope.data,
-        url: url + '/questions/' + $stateParams.id + '/',
-        headers: {'Content-Type': 'application/json; charset=utf-8'}
-      }).
+      questionProcessor.update($http, $scope.data, $stateParams.id).
+      success(function(){
+          $scope.modal.hide();
+        }).
       error(function() {
         console.log('Can not update the question');
       });
-      $scope.modal.hide();
     };
-    $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
+
     $scope.back = function (){
       $location.path("/questions/");
     };
   });
 
+
+var modal = {
+  init: function ($ionicModal, $scope) {
+    $ionicModal.fromTemplateUrl('/templates/modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function (modal) {
+      $scope.modal = modal
+    });
+    $scope.openModal = function () {
+      $scope.modal.show()
+    };
+    $scope.closeModal = function () {
+      $scope.modal.hide();
+    };
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+  }
+};
+
+var questionProcessor = {
+  url: 'http://localhost:8000',
+  getList: function( $http ) {
+    return $http({
+      method: 'GET',
+      url: this.url + '/questions/',
+      headers: {'Content-Type': 'application/json; charset=utf-8'}
+    })
+  },
+  get: function ( $http, id ) {
+    return $http({
+      method: 'GET',
+      url: this.url + '/questions/' + id,
+      headers: {'Content-Type': 'application/json; charset=utf-8'}
+    })
+  },
+  add: function ($http, data) {
+    return $http({
+      method: 'POST',
+      data: data,
+      url: this.url + '/questions/',
+      headers: {'Content-Type': 'application/json; charset=utf-8'}
+    })
+  },
+  delete: function($http, id){
+    return $http({
+      method: 'DELETE',
+      url: this.url + '/questions/' + id + '/',
+      headers: {'Content-Type': 'application/json; charset=utf-8'}
+    })
+  },
+  update: function ($http, data, id) {
+    return $http({
+      method: 'PUT',
+      data: data,
+      url: this.url + '/questions/' + id + '/',
+      headers: {'Content-Type': 'application/json; charset=utf-8'}
+    })
+  }
+};

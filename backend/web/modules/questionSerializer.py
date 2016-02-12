@@ -5,7 +5,7 @@ class QuestionSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(required=False, allow_blank=True, max_length=120)
     description = serializers.CharField(required=False, allow_blank=True, max_length=120)
-    author = serializers.CharField(required=False, allow_blank=True, max_length=120)
+    author = serializers.CharField(required=False)
 
     def create(self, validated_data):
         return Question.objects.create(**validated_data)
