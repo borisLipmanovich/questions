@@ -1,0 +1,121 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Question {{ question.id }}</h2>
+    <div class="table">
+        <div class="panel panel-default">
+            <div class="panel-heading">Question {{ question.id }}</div>
+            <table class="table table-striped" id="modal-table">
+                <tr>
+                    <th class="id">Id</th>
+                    <th class="title">Title</th>
+                    <th class="description">Description</th>
+                    <th class="author">Author</th>
+                    <th class="action">Action</th>
+                </tr>
+                <tr>
+                    <td>{{ question.id }}</td>
+                    <td>{{ question.title }}</td>
+                    <td>{{ question.description }}</td>
+                    <td>{{ question.author }}</td>
+                    <td>
+                        <span class="glyphicon glyphicon-edit" data-toggle="modal" data-target="#editModal" title="edit"></span>
+                        <span class="glyphicon glyphicon-remove" title="remove"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <a href="/questions">Back</a>
+    </div>
+</div>
+
+<!--Edit Modal window -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Edit</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-modal-edit-window">
+                    <input type="hidden" name="id" class="id-edit-value" id="id-edit-value">
+                    <table class="table table-striped">
+                        <tr>
+                            <td><label for="title-edit-value">Title</label></td>
+                            <td><input id="title-edit-value" name="title" type="text" class="title-edit-value"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="description-edit-value">Description</label></td>
+                            <td><input id="description-edit-value" name="description" type="text" class="author-edit-value"/></td>
+                        </tr>
+                        <tr>
+                            <td><label for="author-edit-value">Author</label></td>
+                            <td><input id="author-edit-value" name="key2" type="text" class="author-edit-value"/></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary save-edit-modal">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#modal-table').on("click", ".glyphicon-edit", function(){
+            var id = $(this).attr('id');
+            $('#id-edit-value').val(id);
+
+            var domain_val = $('#domain-edit-value option:contains(' + $("#domain_" + id).text() +')').val();
+            $('#domain-edit-value').val(domain_val);
+
+            var category_val = $('#category-edit-value option:contains(' + $("#category_" + id).text() +')').val();
+            $('#category-edit-value').val(category_val);
+
+            $('#key1-edit-value').val($("#key1_" + id).text());
+            $('#key2-edit-value').val($("#key2_" + id).text());
+
+
+            var dy_val = $('#dy-edit-value option:contains(' + $("#dy_" + id).text() +')').val();
+            $('#dy-edit-value').val(dy_val);
+
+        }).on("click",".glyphicon-remove",function(){
+         var tr = $(this).parent().parent();
+         var id = $(this).parent().prev().prev().text();
+         $.ajax({
+         url: '/questions/' + id,
+         type: 'DELETE',
+         success: function(){
+            tr.remove();
+         }
+         }).fail(function(data){
+            alert(data.responseText);
+         });
+         });
+
+        $('.modal-dialog').on("click", ".save-edit-modal", function(){
+            var arr = $("#form-modal-edit-window").serializeArray();
+            $.ajax({
+                url: '/rules/' + arr[0].value,
+                type: 'PUT',
+                data: arr,
+                success: function(){
+                    window.location.reload();
+                }
+            }).fail(function(data){
+                alert(data.responseText);
+            });
+        });
+    });
+</script>
+</body>
+</html>

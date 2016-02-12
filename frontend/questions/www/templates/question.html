@@ -1,0 +1,46 @@
+<ion-header-bar class="bar-stable">
+  <h1 class="title">Question {{data.id}}</h1>
+</ion-header-bar>
+<ion-content>
+  <div class="action-sheet">
+    <button class="button button-full button-energized" ng-click="back()">Back</button>
+  </div>
+  <div class="row header">
+    <div class="col">Id</div>
+    <div class="col">Title</div>
+    <div class="col">Description</div>
+    <div class="col">Author</div>
+    <div class="col">Action</div>
+  </div>
+  <div class="row">
+    <div class="col">{{data.id}}</div>
+    <div class="col">{{data.title}}</div>
+    <div class="col">{{data.description}}</div>
+    <div class="col">{{data.author}}</div>
+    <div class="col">
+      <button class="button" ng-click="openModal()">Edit</button>
+    </div>
+  </div>
+</ion-content>
+
+<script id="templates/modal.html" type="text/ng-template">
+  <div class="modal">
+    <ion-header-bar>
+      <h1 class="title">Edit Question</h1>
+      <span class="button button-energized" ng-click="closeModal()">close</span>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Title</span>
+          <input type="text" ng-model="data.title">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Description</span>
+          <input type="text" ng-model="data.description">
+        </label>
+      </div>
+      <button class="button button-full button-energized" ng-click="saveModal()">Save</button>
+    </ion-content>
+  </div>
+</script>
