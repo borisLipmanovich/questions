@@ -65,7 +65,8 @@ MIDDLEWARE_CLASSES = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:8100'
+    'localhost:8100',
+    'ec2-54-191-206-231.us-west-2.compute.amazonaws.com:8100'
 )
 ROOT_URLCONF = 'src.urls'
 
