@@ -1,16 +1,19 @@
 /* Empty. Add your own CSS if you like */
 
 .odd {
-  color:#000000;background-color:#EAF2D3;
+  color:#000000;
+  background-color:#EAF2D3;
 }
-.even {
 
-}
 .header{
-  font-size:1.1em;text-align:left;padding-top:5px;padding-bottom:4px;background-color:#A7C942;color:#ffffff;
+  font-size:1.1em;
+  text-align:left;
+  padding-top:5px;
+  padding-bottom:4px;
+  background-color:#A7C942;
+  color:#ffffff;
 }
 
 .slide-in-up.ng-enter-active{
-  min-height: 220px;
   height: 220px;
 }

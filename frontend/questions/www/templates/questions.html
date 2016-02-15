@@ -11,12 +11,12 @@
     <div class="col">Description</div>
     <div class="col">Action</div>
   </div>
-  <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="data in data">
+  <div class="row" ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="(key, data) in data">
     <div class="col" ng-click="showQuestion({{data.id}})">{{data.id}}</div>
     <div class="col" ng-click="showQuestion({{data.id}})">{{data.title}}</div>
     <div class="col" ng-click="showQuestion({{data.id}})">{{data.description}}</div>
     <div class="col">
-      <button class="button" ng-click="deleteQuestion({{data.id}})">Delete</button>
+      <button class="button" ng-click="deleteQuestion({{key}})">Delete</button>
     </div>
   </div>
 </ion-content>

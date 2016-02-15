@@ -25,7 +25,7 @@ angular.module('starter', ['ionic'])
     $urlRouterProvider.otherwise('/questions/');
   })
   .controller("QuestionsController", function($scope, $http, $location, $ionicModal) {
-    /*Get Questions*/
+    /**Get Questions**/
     questionProcessor.getList($http).
     success(function(data) {
       $scope.data = data;
@@ -35,30 +35,34 @@ angular.module('starter', ['ionic'])
     });
 
     modal.init($ionicModal, $scope);
+
+    /**Create**/
     $scope.saveModal = function() {
       var data = {
         title: $scope.data.title,
         description: $scope.data.description
       };
+      $scope.data.push(data);
       questionProcessor.add($http, data).
       success(function () {
         $scope.modal.hide();
-        window.location.reload(true)
       }).
       error(function() {
         console.log('Can not add the question');
       });
     };
 
+    /**GET**/
     $scope.showQuestion = function (id){
       $location.path("/questions/" + id + "/");
     };
 
+    /**DELETE**/
     $scope.deleteQuestion = function (id){
-      questionProcessor.delete($http, id).
+      var item = $scope.data.splice(id, 1);
+      questionProcessor.delete($http, item[0].id).
       success(function () {
         $scope.modal.hide();
-        window.location.reload(true)
       }).
       error(function() {
         console.log('Can not delete the question');
@@ -66,7 +70,7 @@ angular.module('starter', ['ionic'])
     };
   })
   .controller("QuestionController", function($scope, $http, $location, $stateParams, $ionicModal) {
-    /*Get Question*/
+    /**Get**/
     questionProcessor.get($http, $stateParams.id).
     success(function(data) {
       $scope.data = data;
@@ -75,7 +79,7 @@ angular.module('starter', ['ionic'])
       console.log('Can not get the questions from the server');
     });
 
-    /*Update Question Modal*/
+    /**Update**/
     modal.init($ionicModal, $scope);
     $scope.saveModal = function() {
       questionProcessor.update($http, $scope.data, $stateParams.id).
@@ -115,6 +119,7 @@ var modal = {
 
 var questionProcessor = {
   url: 'http://ec2-54-191-206-231.us-west-2.compute.amazonaws.com:8000',
+  //url: 'http://127.0.0.1:8000',
   getList: function( $http ) {
     return $http({
       method: 'GET',

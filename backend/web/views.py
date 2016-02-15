@@ -49,4 +49,4 @@ def question_detail(request, id):
     elif request.method == 'DELETE':
         snippets = Question.objects.get(id=id)
         snippets.delete()
-        return HttpResponse(status=200)
+        return HttpResponse(id, status=200)
