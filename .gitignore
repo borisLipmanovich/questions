@@ -1,3 +1,5 @@
 **/.idea/*
 **/.idea/backend/*
 **/.idea/frontend/*
+/backend/web/migrations/*
+/backend/db.sqlite3
