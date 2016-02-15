@@ -114,7 +114,7 @@ var modal = {
 };
 
 var questionProcessor = {
-  url: 'http://localhost:8000',
+  url: 'http://ec2-54-191-206-231.us-west-2.compute.amazonaws.com:8000',
   getList: function( $http ) {
     return $http({
       method: 'GET',
