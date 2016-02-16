@@ -60,6 +60,7 @@ angular.module('starter', ['ionic'])
 
     $scope.back = function (){
       $location.path("/questions/");
+      $scope.$apply();
     };
   });
 
