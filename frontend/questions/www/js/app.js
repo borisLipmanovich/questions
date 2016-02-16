@@ -26,8 +26,7 @@ angular.module('starter', ['ionic'])
   })
   .controller("QuestionsController", function($scope, $http, $location, $ionicModal) {
     /**Get Questions**/
-    questionProcessor.getList($http)
-
+    questionProcessor.getList($http, $scope);
     modal.init($ionicModal, $scope);
 
     /**Create**/
@@ -37,7 +36,7 @@ angular.module('starter', ['ionic'])
         description: $scope.data.description
       };
       $scope.data.push(data);
-      questionProcessor.add($http, data);
+      questionProcessor.add($http, $scope, data);
     };
     /**GET**/
     $scope.showQuestion = function (id){
@@ -46,17 +45,17 @@ angular.module('starter', ['ionic'])
     /**DELETE**/
     $scope.deleteQuestion = function (id){
       var item = $scope.data.splice(id, 1);
-      questionProcessor.delete($http, item[0].id);
+      questionProcessor.delete($http, $scope, item[0].id);
     };
   })
   .controller("QuestionController", function($scope, $http, $location, $stateParams, $ionicModal) {
     /**Get**/
-    questionProcessor.get($http, $stateParams.id);
+    questionProcessor.get($http, $scope, $stateParams.id);
 
     /**Update**/
     modal.init($ionicModal, $scope);
     $scope.saveModal = function() {
-      questionProcessor.update($http, $scope.data, $stateParams.id);
+      questionProcessor.update($http, $scope, $stateParams.id);
     };
 
     $scope.back = function (){
@@ -88,8 +87,8 @@ var modal = {
 var questionProcessor = {
   url: 'http://ec2-54-191-206-231.us-west-2.compute.amazonaws.com:8000',
   //url: 'http://127.0.0.1:8000',
-  getList: function ($http) {
-    return $http({
+  getList: function ($http, $scope) {
+    $http({
       method: 'GET',
       url: this.url + '/questions/',
       headers: {'Content-Type': 'application/json; charset=utf-8'}
@@ -98,10 +97,11 @@ var questionProcessor = {
       $scope.data = data;
     }).
     error(function () {
+      $scope.status = status;
       console.log('Can not get the questions from the server');
     });
   },
-  get: function ($http, id) {
+  get: function ($http, $scope, id) {
     return $http({
       method: 'GET',
       url: this.url + '/questions/' + id,
@@ -114,7 +114,7 @@ var questionProcessor = {
       console.log('Can not get the questions from the server');
     });
   },
-  add: function ($http, data) {
+  add: function ($http, $scope, data) {
     return $http({
       method: 'POST',
       data: data,
@@ -128,7 +128,7 @@ var questionProcessor = {
       console.log('Can not add the question');
     });
   },
-  delete: function ($http, id) {
+  delete: function ($http, $scope, id) {
     return $http({
       method: 'DELETE',
       url: this.url + '/questions/' + id + '/',
@@ -141,10 +141,10 @@ var questionProcessor = {
       console.log('Can not delete the question');
     });
   },
-  update: function ($http, data, id) {
+  update: function ($http, $scope, id) {
     return $http({
       method: 'PUT',
-      data: data,
+      data: $scope.data,
       url: this.url + '/questions/' + id + '/',
       headers: {'Content-Type': 'application/json; charset=utf-8'}
     }).
