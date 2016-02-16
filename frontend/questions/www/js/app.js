@@ -35,8 +35,8 @@ angular.module('starter', ['ionic'])
         title: $scope.data.title,
         description: $scope.data.description
       };
-      $scope.data.push(data);
-      questionProcessor.add($http, $scope, data);
+      data.id = questionProcessor.add($http, $scope, data);
+
     };
     /**GET**/
     $scope.showQuestion = function (id){
@@ -121,7 +121,8 @@ var questionProcessor = {
       url: this.url + '/questions/',
       headers: {'Content-Type': 'application/json; charset=utf-8'}
     }).
-    success(function () {
+    success(function (data) {
+      $scope.data.push(data);
       $scope.modal.hide();
     }).
     error(function () {
