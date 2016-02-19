@@ -37,7 +37,7 @@ angular.module('starter', ['ionic'])
   };
   /**GET**/
   $scope.showQuestion = function (id){
-    $location.url("/questions/" + id + "/");
+    $location.path("/questions/" + id + "/");
   };
   /**DELETE**/
   $scope.deleteQuestion = function (id){
@@ -55,6 +55,8 @@ angular.module('starter', ['ionic'])
   };
   /**Go back**/
   $scope.back = function (){
+    //window.location.href = "/#/questions/";
     $location.url("/questions/");
+    //$scope.$apply();
   };
 });
