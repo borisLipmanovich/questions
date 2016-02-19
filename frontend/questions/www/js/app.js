@@ -30,11 +30,10 @@ angular.module('starter', ['ionic'])
   questionProcessor.getList($http, $scope);
   /**Create**/
   $scope.saveModal = function() {
-    var data = {
+    data.id = questionProcessor.add($http, $scope, {
       title: $scope.data.title,
       description: $scope.data.description
-    };
-    data.id = questionProcessor.add($http, $scope, data);
+    });
   };
   /**GET**/
   $scope.showQuestion = function (id){
