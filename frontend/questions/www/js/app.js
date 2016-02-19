@@ -37,7 +37,7 @@ angular.module('starter', ['ionic'])
   };
   /**GET**/
   $scope.showQuestion = function (id){
-    $location.path("/questions/" + id + "/");
+    $location.url("/questions/" + id + "/");
   };
   /**DELETE**/
   $scope.deleteQuestion = function (id){
