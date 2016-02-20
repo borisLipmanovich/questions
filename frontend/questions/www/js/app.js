@@ -28,8 +28,9 @@ angular.module('starter', ['ionic'])
   initModalWindow($ionicModal, $scope);
   /**Get List**/
   questionProcessor.getList($http, $scope);
+  
   /**Create**/
-  $scope.saveModal = function() {
+  $scope.saveModal = function(data) {
     data.id = questionProcessor.add($http, $scope, {
       title: $scope.data.title,
       description: $scope.data.description
