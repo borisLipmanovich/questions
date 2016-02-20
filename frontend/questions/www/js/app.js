@@ -6,7 +6,7 @@
 
 angular.module('starter', ['ionic'])
 .run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+   $ionicPlatform.ready(function() {
     // Stuff in here
   });
 })
@@ -55,8 +55,7 @@ angular.module('starter', ['ionic'])
   };
   /**Go back**/
   $scope.back = function (){
-    //window.location.href = "/#/questions/";
-    $location.url("/questions/");
-    //$scope.$apply();
+    $location.path("/questions/");
+    window.location.reload();
   };
 });

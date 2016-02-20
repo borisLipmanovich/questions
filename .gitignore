@@ -4,3 +4,4 @@
 /backend/web/migrations/*
 /backend/db.sqlite3
 .pyc
+/src/__pycache__/*
