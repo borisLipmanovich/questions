@@ -26,6 +26,4 @@ angular.module('starter', ['ionic'])
 })
 .controller("QuestionsController", QuestionsController)
 .controller("QuestionController", QuestionController)
-.factory("QuestionProcessor", function(){
-    return questionProcessor;
-});
+.factory("QuestionProcessor", questionFactory);
